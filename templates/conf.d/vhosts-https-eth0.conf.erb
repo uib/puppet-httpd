@@ -1,0 +1,12 @@
+#
+# Virtual host config and default host for HTTPS 
+#
+
+NameVirtualHost <%= ipaddress %>:443
+
+<VirtualHost <%= fqdn %>:443>
+  DocumentRoot /var/www/html
+  
+  # Default ssl-config for eth0
+  Include conf.d/ssl-eth0.inc
+</VirtualHost>

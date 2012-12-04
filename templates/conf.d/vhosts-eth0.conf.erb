@@ -1,0 +1,22 @@
+# 
+# Virtual host setup.
+# Add new vhost to vhosts.d/
+#
+
+NameVirtualHost <%= ipaddress %>:80
+#NameVirtualHost <%= ipaddress %>:443
+
+# Default vhost port 80
+<VirtualHost <%= fqdn %>:80>
+  DocumentRoot /var/www/html
+</VirtualHost>
+
+#<VirtualHost <%= fqdn %>:443>
+#  DocumentRoot /var/www/html
+#  
+#  # Default ssl-config for eth0
+#  Include conf.d/ssl-vhost.inc
+#</VirtualHost>
+
+# Include all vhosts
+Include vhosts.d/*.conf
