@@ -38,6 +38,14 @@
 #
 class httpd (
   $ensure,
+  $user           = $httpd::params::user,
+  $service        = $httpd::params::service,
+  $packages       = $httpd::params::packages,
+  $replace        = $httpd::params::replace,
+  $server_admin   = $httpd::params::server_admin,
+  $doc_root       = $httpd::params::doc_root,
+  $config_dir     = $httpd::params::config_dir,
+  $server_dns     = $httpd::params::server_dns,
 ) inherits httpd::params {
 
   # Install packages
@@ -54,7 +62,8 @@ class httpd (
 
   # Remove package garbage
   file { "${config_dir}/conf.d/welcome.conf":
-    ensure => absent
+    ensure => absent,
+    require => Package[$packages]
   }
   
   # Main httpd conf
