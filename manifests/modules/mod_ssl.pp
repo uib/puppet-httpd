@@ -1,10 +1,7 @@
 class httpd::modules::mod_ssl(
+  $server_dns      = $httpd::params::server_dns,
+  $config_dir      = $httpd::params::config_dir
 ) inherits httpd::params {
-  
-  $packages = $::osfamily ? {
-    RedHat => 'mod_ssl',
-    default => '',
-  }
   
   # Install packages
   package { 'mod_ssl':
@@ -20,6 +17,7 @@ class httpd::modules::mod_ssl(
     group  => 'root',
     content => template("httpd/conf.d/vhosts-https-eth0.conf.erb"),
     replace => $replace,
+    require => Package['mod_ssl']
   }
   
   file { 'ssl_inc':
@@ -30,6 +28,7 @@ class httpd::modules::mod_ssl(
     group  => 'root',
     content => template("httpd/conf.d/ssl-eth0.inc.erb"),
     replace => $replace,
+    require => Package['mod_ssl']
   }
 
   file { 'ssl_conf':
@@ -41,17 +40,18 @@ class httpd::modules::mod_ssl(
     source    => "puppet:///modules/httpd/ssl.conf",
     replace => $replace,
   }
-    
-  # Placeholders
+
   file { 'ssl_crt':
-    path => "/etc/pki/tls/certs/${fqdn}.crt",
-    ensure => present
+    path => "/etc/pki/tls/certs/${server_dns}.crt",
+    ensure => present,
+    require => Package['mod_ssl']
   }
   file { 'ssl_key':
-    path => "/etc/pki/tls/private/${fqdn}.key",
-    ensure => present
+    path => "/etc/pki/tls/private/${server_dns}.key",
+    ensure => present,
+    require => Package['mod_ssl']
   }
-  
+
   # Terena UiB CA chain
   file { 'cachain':
     path => "/etc/pki/tls/certs/cachain.pem",
@@ -59,10 +59,8 @@ class httpd::modules::mod_ssl(
     mode   => '0644',
     owner  => 'root',
     group  => 'root',
-    source    => "puppet:///modules/httpd/cachain.pem"
+    source    => "puppet:///modules/httpd/cachain.pem",
+    require => Package['mod_ssl']
   }
-  
-  Package[$packages] -> File['cachain']
-  Package[$packages] -> File['ssl_conf']
-  
 }
+
