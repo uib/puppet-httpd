@@ -14,6 +14,7 @@ class httpd::params {
   $server_admin   = "apache@uib.no"
   $doc_root       = "/var/www/html"
   $replace        = true
+  $server_dns     = $::fqdn
   
   $packages = $::osfamily ? {
     Debian => 'apache2',
