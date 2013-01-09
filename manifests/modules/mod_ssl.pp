@@ -39,6 +39,7 @@ class httpd::modules::mod_ssl(
     group  => 'root',
     source    => "puppet:///modules/httpd/ssl.conf",
     replace => $replace,
+    require => Package['mod_ssl']
   }
 
   file { 'ssl_crt':
