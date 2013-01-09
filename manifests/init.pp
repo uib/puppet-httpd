@@ -87,8 +87,8 @@ class httpd (
   }
 
   # IPv6
-  if $::ipaddress6_eth0 {
-    $ipv6_addr = $::ipaddress6_eth0
+  if $::ipaddress6 {
+    $ipv6_addr = $::ipaddress6
   } else {
     $ipv6_addr = false
   }
