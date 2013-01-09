@@ -2,7 +2,9 @@
 # Virtual host setup for HTTP (port 80)
 # Add new vhost to vhosts.d/
 #
-
+<%- if $ipv6_addr %>
+NameVirtualHost <%=  $ipv6_addr %>:80
+<%- end %>
 NameVirtualHost <%= ipaddress %>:80
 
 # Default vhost port 80
