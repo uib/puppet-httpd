@@ -1,9 +1,7 @@
 #
 # Virtual host setup for HTTPS (port 443)
 #
-<%- if ipv6_addr %>
-NameVirtualHost <%=  ipv6_addr %>:443
-<%- end %>
+<%- if ipv6_addr %>NameVirtualHost <%=  ipv6_addr %>:443<%- end %>
 NameVirtualHost <%= ipaddress %>:443
 
 <VirtualHost <%= fqdn %>:443>
