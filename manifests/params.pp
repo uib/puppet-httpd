@@ -35,5 +35,8 @@ class httpd::params {
     RedHat => 'httpd',
     default => '',
   }
-
+  $ipv6_addr = $::ipaddress6 ? {
+    undef => false,
+    default => $::ipaddress6
+  }
 }

@@ -86,13 +86,6 @@ class httpd (
     group  => root
   }
 
-  # IPv6
-  if $::ipaddress6 {
-    $ipv6_addr = $::ipaddress6
-  } else {
-    $ipv6_addr = false
-  }
-
   # This file will set up virtual hosts
   file { 'vhosts_inc':
     path =>  "${config_dir}/conf.d/vhost-eth0.conf",
