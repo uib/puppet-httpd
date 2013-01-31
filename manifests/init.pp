@@ -9,23 +9,16 @@
 #   If this is set to true we replace all config files with puppet,
 #   otherwise we just insure the file is in place
 #
-# [*packages*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
 # [*config_dir*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
-# [*myuser*]
 #   Explanation of what this parameter affects and what it defaults to.
 #   e.g. "Specify one or more upstream ntp servers as an array."
 #
 #
 # === Examples
 #
-#  class { 'template':
-#    packages => 'apache-uib'
+#  class { 'httpd':
+#    ensure => true,
+#    server_admin => 'webmaster@uib.no'
 #  }
 #
 # === Authors
@@ -34,13 +27,12 @@
 #
 # === Copyright
 #
-# Copyright 2012 UiB
+# Copyright 2013 UiB
 #
 class httpd (
   $ensure,
   $user           = $httpd::params::user,
-  $service        = $httpd::params::service,
-  $packages       = $httpd::params::packages,
+  $group          = $httpd::params::group,
   $replace        = $httpd::params::replace,
   $server_admin   = $httpd::params::server_admin,
   $doc_root       = $httpd::params::doc_root,
@@ -74,7 +66,8 @@ class httpd (
     owner   => root,
     group   => root,
     content => template("httpd/conf/httpd.conf.erb"),
-    replace => $replace
+    replace => $replace,
+    notify  => Service[$service]
   }
     
   # Create vhosts.d folder
@@ -95,6 +88,18 @@ class httpd (
     group  => 'root',
     content => template("httpd/conf.d/vhosts-eth0.conf.erb"),
     replace => $replace,
+    notify => Service[$service]
+  }
+  
+  # vhosts.d include file
+  file { 'include_conf':
+    path => "${config_dir}/conf.d/zz_include.conf",
+    ensure => present,
+    mode   => '0644',
+    owner  => root,
+    group  => root,
+    source    => "puppet:///modules/httpd/zz_include.conf",
+    replace => $replace
   }
 
   # Create a dummy default page with hostname
@@ -102,20 +107,13 @@ class httpd (
     path => "${doc_root}/index.html",
     content => $::fqdn,
     replace => false,
+    require => Package[$packages]
   }
   
   # Set up resource dependencies (Resource chaining)
   Package[$packages] -> File['vhosts_inc'] -> Service[$service]
   Package[$packages] -> File['main_conf'] -> Service[$service]
   Package[$packages] -> File['vhosts_dir'] -> Service[$service]
-  Package[$packages] -> File['default_page']
+  Package[$packages] -> File['include_conf'] -> Service[$service]
   
-  # Vagrant or local machine hack
-  if $fqdn == 'privnett.uib.no' {
-    host { 'privnett.uib.no':
-      ensure => present,
-      ip => $::ipaddress
-    }
-    Host['privnett.uib.no'] -> Service[$service]
-  }
 }
