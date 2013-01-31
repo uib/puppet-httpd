@@ -1,4 +1,30 @@
+# == Class: httpd::module::mod_ssl
+#
+# This add SSL support for apache httpd
+#
+# === Parameters
+#
+# [*ssl_host*]
+#   This is used for the name of the .crt and .key files. Default to ::fqdn
+#   Set this to 'localhost' to use the precreated self signed certificate
+#
+#
+# === Examples
+#
+#  class { 'httpd::module::mod_ssl':
+#    ssl_host => 'localhost'
+#  }
+#
+# === Authors
+#
+# Raymond Kristiansen <st02221@uib.no>
+#
+# === Copyright
+#
+# Copyright 2013 UiB
+#
 class httpd::modules::mod_ssl(
+  $ssl_host        = $httpd::params::ssl_host,
   $server_dns      = $httpd::params::server_dns,
   $config_dir      = $httpd::params::config_dir
 ) inherits httpd::params {
@@ -17,7 +43,8 @@ class httpd::modules::mod_ssl(
     group  => 'root',
     content => template("httpd/conf.d/vhosts-https-eth0.conf.erb"),
     replace => $replace,
-    require => Package['mod_ssl']
+    require => Package['mod_ssl'],
+    notify => Service[$service]
   }
   
   file { 'ssl_inc':
