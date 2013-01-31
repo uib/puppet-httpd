@@ -9,6 +9,3 @@ NameVirtualHost <%= ipaddress %>:80
 <VirtualHost <%= server_dns %>:80>
   DocumentRoot /var/www/html
 </VirtualHost>
-
-# Include all vhosts
-Include vhosts.d/*.conf
