@@ -15,6 +15,7 @@ class httpd::params {
   $doc_root       = "/var/www/html"
   $replace        = true
   $server_dns     = $::fqdn
+  $ssl_host       = $::fqdn
   
   $packages = $::osfamily ? {
     Debian => 'apache2',
@@ -26,9 +27,10 @@ class httpd::params {
     default => '',
   }
   $user = $::osfamily ? {
-    Debian => 'apache',
-    RedHat => 'httpd',
-    default => '',
+    default => 'apache',
+  }
+  $group = $::osfamily ? {
+    default => 'apache',
   }
   $service = $::osfamily ? {
     Debian => 'www-data',
