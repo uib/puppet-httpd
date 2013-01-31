@@ -21,14 +21,14 @@ SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH
 # the certificate is encrypted, then you will be prompted for a
 # pass phrase.  Note that a kill -HUP will prompt again.  A new
 # certificate can be generated using the genkey(1) command.
-SSLCertificateFile /etc/pki/tls/certs/<%= server_dns %>.crt
+SSLCertificateFile /etc/pki/tls/certs/<%= ssl_host %>.crt
 
 #   Server Private Key:
 #   If the key is not combined with the certificate, use this
 #   directive to point at the key file.  Keep in mind that if
 #   you've both a RSA and a DSA private key you can configure
 #   both in parallel (to also allow the use of DSA ciphers, etc.)
-SSLCertificateKeyFile /etc/pki/tls/private/<%= server_dns %>.key
+SSLCertificateKeyFile /etc/pki/tls/private/<%= ssl_host %>.key
 
 #   Server Certificate Chain:
 #   Point SSLCertificateChainFile at a file containing the
