@@ -30,7 +30,6 @@
 # Copyright 2013 UiB
 #
 class httpd (
-  $ensure,
   $user           = $httpd::params::user,
   $group          = $httpd::params::group,
   $replace        = $httpd::params::replace,
