@@ -72,11 +72,13 @@ class httpd::modules::mod_ssl(
   file { 'ssl_crt':
     path => "/etc/pki/tls/certs/${server_dns}.crt",
     ensure => present,
+    mode => '0644',
     require => Package['mod_ssl']
   }
   file { 'ssl_key':
     path => "/etc/pki/tls/private/${server_dns}.key",
     ensure => present,
+    mode => '0600',
     require => Package['mod_ssl']
   }
 
