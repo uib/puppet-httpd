@@ -249,8 +249,8 @@ ExtendedStatus Off
 #  when the value of (unsigned)Group is above 60000; 
 #  don't use Group #-1 on these systems!
 #
-User <%= user %>
-Group <%= group %>
+User <%= @user %>
+Group <%= @group %>
 
 ### Section 2: 'Main' server configuration
 #
@@ -269,7 +269,7 @@ Group <%= group %>
 # e-mailed.  This address appears on some server-generated pages, such
 # as error documents.  e.g. admin@your-domain.com
 #
-ServerAdmin <%= server_admin %>
+ServerAdmin <%= @server_admin %>
 
 #
 # ServerName gives the name and port that the server uses to identify itself.
@@ -299,7 +299,7 @@ UseCanonicalName Off
 # documents. By default, all requests are taken from this directory, but
 # symbolic links and aliases may be used to point to other locations.
 #
-DocumentRoot "<%= doc_root%>"
+DocumentRoot "<%= @doc_root%>"
 
 #
 # Each directory to which Apache has access can be configured with respect
@@ -324,7 +324,7 @@ DocumentRoot "<%= doc_root%>"
 #
 # This should be changed to whatever you set DocumentRoot to.
 #
-<Directory "<%= doc_root%>">
+<Directory "<%= @doc_root%>">
 
 #
 # Possible values for the Options directive are "None", "All",
