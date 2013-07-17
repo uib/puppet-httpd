@@ -1,7 +1,7 @@
 class httpd::modules::mod_passenger(
-  $config_dir   = $httpd::params::config_dir,
-  $service      = $httpd::params::service
-) inherits httpd::params {
+  $config_dir   = $httpd::config_dir,
+  $service      = $httpd::service
+) {
 
   # Install packages
   package { 'mod_passenger':
@@ -11,6 +11,6 @@ class httpd::modules::mod_passenger(
   file { 'passenger_conf':
     path => "${config_dir}/conf.d/passenger.conf",
     ensure => present,
-    notify => Service[$service]
+    notify => Class['httpd::service']
   }
 }

@@ -24,35 +24,36 @@
 # Copyright 2013 UiB
 #
 class httpd::modules::mod_ssl(
-  $ssl_host        = $httpd::params::ssl_host,
-  $server_dns      = $httpd::params::server_dns,
-  $config_dir      = $httpd::params::config_dir
-) inherits httpd::params {
+  $ssl_host       = $httpd::ssl_host,
+  $server_dns     = $httpd::server_dns,
+  $config_dir     = $httpd::config_dir,
+  $replace        = $httpd::replace,
+) {
   
   # Install packages
   package { 'mod_ssl':
     ensure => installed
   }
   
+  File {
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',    
+  }
+  
   # This file will set up virtual hosts
   file { 'vhosts_https':
-    path =>  "${config_dir}/conf.d/vhost-https-eth0.conf",
-    ensure => present,
-    mode   => '0644',
-    owner  => 'root',
-    group  => 'root',
+    path    =>  "${config_dir}/conf.d/vhost-https-eth0.conf",
+    ensure  => present,
     content => template("httpd/conf.d/vhosts-https-eth0.conf.erb"),
     replace => $replace,
     require => Package['mod_ssl'],
-    notify => Service[$service]
+    notify  => Class['httpd::service']
   }
   
   file { 'ssl_inc':
     path =>  "${config_dir}/conf.d/ssl-eth0.inc",
     ensure => present,
-    mode   => '0644',
-    owner  => 'root',
-    group  => 'root',
     content => template("httpd/conf.d/ssl-eth0.inc.erb"),
     replace => $replace,
     require => Package['mod_ssl']
@@ -61,9 +62,6 @@ class httpd::modules::mod_ssl(
   file { 'ssl_conf':
     path => "${config_dir}/conf.d/ssl.conf",
     ensure => file,
-    mode   => '0644',
-    owner  => 'root',
-    group  => 'root',
     source    => "puppet:///modules/httpd/ssl.conf",
     replace => $replace,
     require => Package['mod_ssl']
@@ -72,7 +70,6 @@ class httpd::modules::mod_ssl(
   file { 'ssl_crt':
     path => "/etc/pki/tls/certs/${server_dns}.crt",
     ensure => present,
-    mode => '0644',
     require => Package['mod_ssl']
   }
   file { 'ssl_key':
@@ -86,11 +83,7 @@ class httpd::modules::mod_ssl(
   file { 'cachain':
     path => "/etc/pki/tls/certs/cachain.pem",
     ensure => file,
-    mode   => '0644',
-    owner  => 'root',
-    group  => 'root',
     source    => "puppet:///modules/httpd/cachain.pem",
     require => Package['mod_ssl']
   }
 }
-
