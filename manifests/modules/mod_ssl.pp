@@ -4,7 +4,7 @@
 #
 # === Parameters
 #
-# [*ssl_host*]
+# [*ssl_keys*]
 #   This is used for the name of the .crt and .key files. Default to ::fqdn
 #   Set this to 'localhost' to use the precreated self signed certificate
 #
@@ -12,7 +12,7 @@
 # === Examples
 #
 #  class { 'httpd::module::mod_ssl':
-#    ssl_host => 'localhost'
+#    ssl_keys => 'localhost'
 #  }
 #
 # === Authors
@@ -24,7 +24,7 @@
 # Copyright 2013 UiB
 #
 class httpd::modules::mod_ssl(
-  $ssl_host       = $httpd::ssl_host,
+  $ssl_keys       = $httpd::ssl_keys,
   $server_dns     = $httpd::server_dns,
   $config_dir     = $httpd::config_dir,
   $replace        = $httpd::replace,
@@ -38,9 +38,9 @@ class httpd::modules::mod_ssl(
   File {
     mode    => '0644',
     owner   => 'root',
-    group   => 'root',    
+    group   => 'root',
   }
-  
+
   # This file will set up virtual hosts
   file { 'vhosts_https':
     path    =>  "${config_dir}/conf.d/vhost-https-eth0.conf",
@@ -68,12 +68,12 @@ class httpd::modules::mod_ssl(
   }
 
   file { 'ssl_crt':
-    path => "/etc/pki/tls/certs/${server_dns}.crt",
+    path => "/etc/pki/tls/certs/${ssl_keys}.crt",
     ensure => present,
     require => Package['mod_ssl']
   }
   file { 'ssl_key':
-    path => "/etc/pki/tls/private/${server_dns}.key",
+    path => "/etc/pki/tls/private/${ssl_keys}.key",
     ensure => present,
     mode => '0600',
     require => Package['mod_ssl']

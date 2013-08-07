@@ -30,7 +30,7 @@ class httpd (
   $doc_root       = "/var/www/html",
   $replace        = true,
   $server_dns     = $::fqdn,
-  $ssl_host       = $::fqdn,
+  $ssl_keys       = $::fqdn,
   $config_dir = $::osfamily ? { RedHat => '/etc/httpd/', default => '', },
   $user = $::osfamily ? { default => 'apache', },
   $group = $::osfamily ? { default => 'apache', },
