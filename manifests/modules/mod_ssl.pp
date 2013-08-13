@@ -28,6 +28,7 @@ class httpd::modules::mod_ssl(
   $server_dns     = $httpd::server_dns,
   $config_dir     = $httpd::config_dir,
   $replace        = $httpd::replace,
+  $ipv6_addr      = $httpd::ipv6_addr
 ) {
   
   # Install packages
