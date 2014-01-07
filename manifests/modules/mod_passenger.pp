@@ -5,7 +5,7 @@ class httpd::modules::mod_passenger(
 
   # Install packages
   package { 'mod_passenger':
-    ensure => installed
+    ensure => latest
   }
 
   file { 'passenger_conf':
