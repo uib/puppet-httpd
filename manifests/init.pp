@@ -35,7 +35,7 @@ class httpd (
   $user = $::osfamily ? { default => 'apache', },
   $group = $::osfamily ? { default => 'apache', },
   $ipv6_addr = $::ipaddress6 ? { undef => false, default => $::ipaddress6 },
-
+  $interface = undef,
   $service = $::osfamily ? {
     Debian => 'www-data',
     RedHat => 'httpd',
@@ -47,6 +47,13 @@ class httpd (
     default => '',
   },
 )  {
+
+  case $interface {
+    eth0: { $vhost_ip = $::ipaddress_eth0 }
+    eth1: { $vhost_ip = $::ipaddress_eth1 }
+    eth2: { $vhost_ip = $::ipaddress_eth2 }
+    default: {$vhost_ip = $::ipaddress}
+  }
 
   class { 'httpd::install': } ->
   class { 'httpd::config': } ->

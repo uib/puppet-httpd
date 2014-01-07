@@ -2,7 +2,7 @@
 # Virtual host setup for HTTPS (port 443)
 #
 <%- if @ipv6_addr %>NameVirtualHost <%=  @ipv6_addr %>:443<%- end %>
-NameVirtualHost <%= @ipaddress %>:443
+NameVirtualHost <%= @vhost_ip %>:443
 
 <VirtualHost <%= @server_dns %>:443>
   DocumentRoot /var/www/html
