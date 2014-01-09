@@ -28,9 +28,17 @@ class httpd::modules::mod_ssl(
   $server_dns     = $httpd::server_dns,
   $config_dir     = $httpd::config_dir,
   $replace        = $httpd::replace,
-  $ipv6_addr      = $httpd::ipv6_addr
+  $ipv6_addr      = $httpd::ipv6_addr,
+  $interface      = $httpd::interface,
 ) {
   
+  case $interface {
+    eth0: { $vhost_ip = $::ipaddress_eth0 }
+    eth1: { $vhost_ip = $::ipaddress_eth1 }
+    eth2: { $vhost_ip = $::ipaddress_eth2 }
+    default: {$vhost_ip = $::ipaddress}
+  }
+
   # Install packages
   package { 'mod_ssl':
     ensure => installed
