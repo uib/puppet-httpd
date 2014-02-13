@@ -31,6 +31,9 @@ define httpd::vhosts(
   file { "${name}.conf":
     path    => "/etc/httpd/vhosts.d/${name}.conf",
     ensure  => present,
+    owner   => root,
+    group   => root,
+    mode    => 0644,
     content => template("${module_name}/vhosts.d/${$type}.conf.erb"),
     notify  => Class['httpd::service'],
   }
