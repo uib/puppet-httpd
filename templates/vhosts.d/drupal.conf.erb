@@ -1,0 +1,32 @@
+#
+# MANAGED BY PUPPET!
+# See puppet code httpd::vhosts for more info
+#
+<%- if @use_ssl %>
+# Redirect http to https
+<VirtualHost <%= @service_name %>:80>
+  ServerName <%= @service_name %>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteRule (.*) https://<%= @service_name %>%{REQUEST_URI}
+</VirtualHost>
+
+<%- end %>
+<VirtualHost <%= @service_name %>:<%- if @use_ssl %>443<%- else %>80<%- end %>>
+  ServerName <%= @service_name %>
+  DocumentRoot <%= @doc_root %>
+
+  # Allow .htaccess for drupal
+  <Directory <%= @doc_root %>>
+    AllowOverride All
+  </Directory>
+
+  # PHP CONFIG for drupal site
+  php_admin_value max_execution_time 400
+  php_admin_value memory_limit 512M
+
+<%- if @use_ssl %>
+  # Include SSL conf
+  Include conf.d/ssl-eth0.inc
+<%- end %>
+</VirtualHost>
