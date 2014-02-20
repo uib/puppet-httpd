@@ -8,9 +8,19 @@
 #
 # [*doc_root*]
 #
+# [*type*]
+#   Template type. Must match template name.
+#
+# [*settings*]
+#   Hiera hash with optional settings. Can be used to set php_admin_value
+#   and php_admin_flag. See template for more options.
 #
 # === Examples
 #
+# httpd::vhosts { 'mysite':
+#   service_name => 'mysite.example.com'
+#   doc_root => /var/www/html
+# }
 #
 # === Authors
 #
