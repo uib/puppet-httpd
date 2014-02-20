@@ -16,7 +16,18 @@
   ServerName <%= @service_name %>
   DocumentRoot <%= @doc_root %>
 
-  <%- if @settings %><%=@settings%><%- end %>
+<% if @settings['php_admin_value'] -%>
+<% php_admin_value = @settings['php_admin_value'] -%>
+<% php_admin_value.sort.each do |key,val| -%>
+  php_admin_value <%= key %> <%= val %>
+<% end -%>
+<% end -%>
+<% if @settings['php_admin_flag'] -%>
+<% php_admin_flag = @settings['php_admin_flag'] -%>
+<% php_admin_flag.sort.each do |key,val| -%>
+  php_admin_flag <%= key %> <%= val %>
+<% end -%>
+<% end -%>
 
 <%- if @use_ssl %>
   # Include SSL conf
