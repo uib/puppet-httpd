@@ -31,7 +31,7 @@
 <% if @settings['directory'] -%>
   <Directory <%=@settings['directory_path']%>>
 <% dir_settings = @settings['directory'] -%>
-<% dir_settings.sort.each do |key,val| -%>
+<% dir_settings.each do |key,val| -%>
     <%= key %> <%= val %>
 <% end -%>
   </Directory>
