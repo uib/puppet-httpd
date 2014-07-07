@@ -28,6 +28,14 @@
   php_admin_flag <%= key %> <%= val %>
 <% end -%>
 <% end -%>
+<% if @settings['directory'] -%>
+  <Directory <%=@settings['directory_path']%>>
+<% dir_settings = @settings['directory'] -%>
+<% dir_settings.sort.each do |key,val| -%>
+    <%= key %> <%= val %>
+  </Directory>
+<% end -%>
+<% end -%>
 
 <%- if @use_ssl %>
   # Include SSL conf
