@@ -1,6 +1,7 @@
 class httpd::modules::mod_auth_kerb(
   $config_dir     = $httpd::config_dir,
   $service        = $httpd::service,
+  $group          = $httpd::group,
   $manage_keytab  = true
 ) {
 
@@ -20,7 +21,7 @@ class httpd::modules::mod_auth_kerb(
     file { '/etc/httpd/keytabs/http.keytab':
       ensure  => present,
       owner   => root,
-      group   => root,
+      group   => $group,
       mode    => 0640
     }
   }
