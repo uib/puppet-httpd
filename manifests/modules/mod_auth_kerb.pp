@@ -22,7 +22,14 @@ class httpd::modules::mod_auth_kerb(
       ensure  => present,
       owner   => root,
       group   => $group,
-      mode    => 0640
+      mode    => 0640,
+      require => File['/etc/httpd/keytabs']
+    }
+    file { '/etc/httpd/keytabs':
+      ensure  => directory,
+      owner   => root,
+      group   => $group,
+      mode    => 0750
     }
   }
 }
