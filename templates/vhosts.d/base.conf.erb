@@ -11,10 +11,13 @@
   RewriteRule (.*) https://<%= @service_name %>%{REQUEST_URI}
 </VirtualHost>
 
-<%- end %>
+<% end -%>
 <VirtualHost <%= @service_name %>:<%- if @use_ssl %>443<%- else %>80<%- end %>>
   ServerName <%= @service_name %>
   DocumentRoot <%= @doc_root %>
+<% unless @service_alias.empty? -%>
+  ServerAlias<% @service_alias.sort.each do |val| -%> <%=val%><% end -%>
+<% end -%>
 
 <% if @settings['php_admin_value'] -%>
 <% php_admin_value = @settings['php_admin_value'] -%>
@@ -28,18 +31,36 @@
   php_admin_flag <%= key %> <%= val %>
 <% end -%>
 <% end -%>
+
 <% if @settings['directory'] -%>
-  <Directory <%=@settings['directory_path']%>>
+  # Directory
+  <Directory <%= @settings['directory_path'].nil? ? @doc_root : @settings['directory_path'] %>>
 <% dir_settings = @settings['directory'] -%>
-<% dir_settings.each do |key,val| -%>
+<% dir_settings.sort.each do |key,val| -%>
     <%= key %> <%= val %>
 <% end -%>
   </Directory>
 <% end -%>
 
-<%- if @use_ssl %>
+<% if @settings['location'] -%>
+  # Location
+  <Location <%= @settings['location_path'].nil? ? @doc_root : @settings['location_path'] %>>
+<% loc_settings = @settings['location'] -%>
+<% loc_settings.sort.each do |key,val| -%>
+    <%= key %> <%= val %>
+<% end -%>
+  </Location>
+<% end -%>
+
+<% if @settings['custom'] -%>
+  # Custom settings:
+<% @settings['custom'].sort.each do |key,val| -%>
+  <%= key %> <%= val %>
+<% end -%>
+<% end -%>
+
+<% if @use_ssl -%>
   # Include SSL conf
   Include conf.d/ssl-eth0.inc
-<%- end %>
-
+<% end -%>
 </VirtualHost>

@@ -12,14 +12,26 @@
 #   Template type. Must match template name.
 #
 # [*settings*]
-#   Hiera hash with optional settings. Can be used to set php_admin_value
-#   and php_admin_flag. See template for more options.
+#   Hiera hash with optional directive settings:
+#   * php_admin_value
+#   * php_admin_flag
+#   * directory directive
+# See template for more options.
 #
 # === Examples
 #
 # httpd::vhosts { 'mysite':
 #   service_name => 'mysite.example.com'
 #   doc_root => /var/www/html
+#   settings => { 
+#     directory_path => /var/www/html,
+#     directory => {
+#       AllowOverride =>  all,
+#       Order => 'deny,allow',
+#       Deny => 'from all',
+#       Allow => 'from 129.177.'
+#     }
+#   }
 # }
 #
 # === Authors
@@ -33,10 +45,14 @@
 define httpd::vhosts(
   $service_name,
   $doc_root,
+  $service_alias = [],
   $use_ssl = false,
   $type = 'base',
   $settings = ''
 ) {
+
+  # Validate that service alias is an array
+  validate_array($service_alias)
 
   file { "${name}.conf":
     path    => "/etc/httpd/vhosts.d/${name}.conf",
