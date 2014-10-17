@@ -48,7 +48,7 @@ define httpd::vhosts(
   # Validate that service alias is an array
   validate_array($service_alias)
 
-  file { "${name}.conf":
+  file { "/etc/httpd/vhosts.d/${name}.conf":
     path    => "/etc/httpd/vhosts.d/${name}.conf",
     ensure  => present,
     owner   => root,
