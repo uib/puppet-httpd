@@ -46,6 +46,7 @@ class httpd (
     RedHat => 'httpd',
     default => '',
   },
+  $prefork_settings = {},
 )  {
 
   case $interface {
