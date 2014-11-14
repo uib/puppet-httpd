@@ -17,7 +17,6 @@ class httpd::config(
   $config_dir   = $httpd::config_dir,
   $replace      = $httpd::replace,
   $doc_root     = $httpd::doc_root,
-  $core_modules = $httpd::core_modules
 ) {
 
   File {
@@ -71,16 +70,16 @@ class httpd::config(
     replace   => false,
   }
 
-  # This file will set list extra core modules that is enabled 
-  unless empty($core_modules) {
-    validate_hash($core_modules)
-
-    file { 'core_modules':
-      path    =>  "${config_dir}/conf.d/core_modules.conf",
-      ensure  => present,
-      content => template("httpd/conf.d/core_modules.conf.erb"),
-      notify  => Class['httpd::service']
-    }
+  # This file will set extra core modules that is enabled 
+  concat { "${config_dir}/conf.d/core_modules.conf":
+    owner   => 'root',
+    group   => 'root',
+    replace => true,
+  }
+  concat::fragment { "header":
+    target  => "${config_dir}/conf.d/core_modules.conf",
+    content => "# This file is managed by Puppet!\n",
+    order   => 01,
   }
 
 }

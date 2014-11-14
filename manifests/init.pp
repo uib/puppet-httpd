@@ -47,7 +47,6 @@ class httpd (
     default => '',
   },
   $prefork_settings = {},
-  $core_modules = undef,
 )  {
 
   case $interface {
