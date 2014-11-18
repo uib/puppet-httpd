@@ -42,7 +42,9 @@ define httpd::vhosts(
   $service_alias = [],
   $use_ssl = false,
   $type = 'base',
-  $settings = ''
+  $settings = '',
+  $port = '80',
+  $ssl_port = '443'
 ) {
 
   # Validate that service alias is an array

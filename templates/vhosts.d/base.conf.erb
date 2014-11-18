@@ -4,7 +4,7 @@
 #
 <%- if @use_ssl %>
 # Redirect http to https
-<VirtualHost <%= @service_name %>:80>
+<VirtualHost <%= @service_name %>:<%= @port %>
   ServerName <%= @service_name %>
   RewriteEngine On
   RewriteCond %{HTTPS} off
@@ -12,7 +12,7 @@
 </VirtualHost>
 
 <% end -%>
-<VirtualHost <%= @service_name %>:<%- if @use_ssl %>443<%- else %>80<%- end %>>
+<VirtualHost <%= @service_name %>:<%- if @use_ssl %><%= @ssl_port %><%- else %><%= @port %><%- end %>>
   ServerName <%= @service_name %>
   DocumentRoot <%= @doc_root %>
 <% unless @service_alias.empty? -%>
@@ -33,23 +33,25 @@
 <% end -%>
 
 <% if @settings['directory'] -%>
-  # Directory
-  <Directory <%= @settings['directory_path'].nil? ? @doc_root : @settings['directory_path'] %>>
-<% dir_settings = @settings['directory'] -%>
-<% dir_settings.sort.each do |key,val| -%>
+<% directories = @settings['directory'] -%>
+<% directories.sort.each do |path, settings| -%>
+<Directory <%= path %>>
+<% settings.sort.each do |key, val| -%>
     <%= key %> <%= val %>
 <% end -%>
-  </Directory>
+</Directory>
+<% end -%>
 <% end -%>
 
 <% if @settings['location'] -%>
-  # Location
-  <Location <%= @settings['location_path'].nil? ? @doc_root : @settings['location_path'] %>>
-<% loc_settings = @settings['location'] -%>
-<% loc_settings.sort.each do |key,val| -%>
-    <%= key %> <%= val %>
+<% locations = @settings['location'] -%>
+<% locations.sort.each do |path, settings| -%>
+<Location <%= path %>>
+<% settings.sort.each do |key, val| -%>
+  <%= key %> <%= val %>
 <% end -%>
-  </Location>
+</Location>
+<% end -%>
 <% end -%>
 
 <% if @settings['custom'] -%>
