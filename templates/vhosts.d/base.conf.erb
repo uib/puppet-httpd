@@ -4,7 +4,7 @@
 #
 <%- if @use_ssl %>
 # Redirect http to https
-<VirtualHost <%= @service_name %>:<%= @port %>
+<VirtualHost <%= @service_name %>:<%= @port %>>
   ServerName <%= @service_name %>
   RewriteEngine On
   RewriteCond %{HTTPS} off
