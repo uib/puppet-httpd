@@ -54,6 +54,34 @@
 <% end -%>
 <% end -%>
 
+<% if @settings['alias'] -%>
+<% aliases = @settings['alias'] -%>
+<% aliases.sort.each do |url, path| -%>
+Alias <%= url %> <%= path %>
+<% end -%>
+<% end -%>
+
+<% if @settings['alias_match'] -%>
+<% alias_matches = @settings['alias_match'] -%>
+<% alias_matches.sort.each do |regex, path| -%>
+Alias <%= regex %> <%= path %>
+<% end -%>
+<% end -%>
+
+<% if @settings['script_alias'] -%>
+<% script_aliases = @settings['script_alias'] -%>
+<% script_aliases.sort.each do |url, path| -%>
+SciprtAlias <%= url %> <%= path %>
+<% end -%>
+<% end -%>
+
+<% if @settings['script_alias_match'] -%>
+<% script_alias_matches = @settings['script_alias_match'] -%>
+<% script_alias_matches.sort.each do |regex, path| -%>
+ScriptAliasMatch <%= regex %> <%= path %>
+<% end -%>
+<% end -%>
+
 <% if @settings['custom'] -%>
   # Custom settings:
 <% @settings['custom'].sort.each do |key,val| -%>
