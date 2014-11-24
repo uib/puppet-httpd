@@ -35,50 +35,50 @@
 <% if @settings['directory'] -%>
 <% directories = @settings['directory'] -%>
 <% directories.sort.each do |path, settings| -%>
-<Directory <%= path %>>
+  <Directory <%= path %>>
 <% settings.sort.each do |key, val| -%>
-    <%= key %> <%= val %>
+      <%= key %> <%= val %>
 <% end -%>
-</Directory>
+  </Directory>
 <% end -%>
 <% end -%>
 
 <% if @settings['location'] -%>
 <% locations = @settings['location'] -%>
 <% locations.sort.each do |path, settings| -%>
-<Location <%= path %>>
+  <Location <%= path %>>
 <% settings.sort.each do |key, val| -%>
-  <%= key %> <%= val %>
+    <%= key %> <%= val %>
 <% end -%>
-</Location>
+  </Location>
 <% end -%>
 <% end -%>
 
 <% if @settings['alias'] -%>
 <% aliases = @settings['alias'] -%>
 <% aliases.sort.each do |url, path| -%>
-Alias <%= url %> <%= path %>
+  Alias <%= url %> <%= path %>
 <% end -%>
 <% end -%>
 
 <% if @settings['alias_match'] -%>
 <% alias_matches = @settings['alias_match'] -%>
 <% alias_matches.sort.each do |regex, path| -%>
-Alias <%= regex %> <%= path %>
+  AliasMatch <%= regex %> <%= path %>
 <% end -%>
 <% end -%>
 
 <% if @settings['script_alias'] -%>
 <% script_aliases = @settings['script_alias'] -%>
 <% script_aliases.sort.each do |url, path| -%>
-SciprtAlias <%= url %> <%= path %>
+  ScriptAlias <%= url %> <%= path %>
 <% end -%>
 <% end -%>
 
 <% if @settings['script_alias_match'] -%>
 <% script_alias_matches = @settings['script_alias_match'] -%>
 <% script_alias_matches.sort.each do |regex, path| -%>
-ScriptAliasMatch <%= regex %> <%= path %>
+  ScriptAliasMatch <%= regex %> <%= path %>
 <% end -%>
 <% end -%>
 
