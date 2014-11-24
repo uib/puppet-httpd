@@ -37,7 +37,7 @@
 <% directories.sort.each do |path, settings| -%>
   <Directory <%= path %>>
 <% settings.sort.each do |key, val| -%>
-      <%= key %> <%= val %>
+    <%= key %> <%= val %>
 <% end -%>
   </Directory>
 <% end -%>
