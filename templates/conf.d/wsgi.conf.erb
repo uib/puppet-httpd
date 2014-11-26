@@ -1,0 +1,4 @@
+LoadModule wsgi_module <%= @module_path -%>/mod_wsgi.so
+<% if @socket_path -%>
+WSGISocketPrefix <%= @socket_path %> 
+<% end -%>
