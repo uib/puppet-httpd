@@ -12,7 +12,7 @@ class httpd::modules::mod_wsgi(
   file { 'wsgi_conf':
     path => "${config_dir}/conf.d/wsgi.conf",
     ensure => present,
-    content => template('httpd/conf.d/mod_wsgi.conf.erb'),
+    content => template('httpd/conf.d/wsgi.conf.erb'),
     replace => $replace,
     notify  => Class['httpd::service']
   }
