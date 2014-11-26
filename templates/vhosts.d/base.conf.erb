@@ -90,8 +90,6 @@
   RewriteBase <%= @settings['rewrite_base'] %>
 <% end -%>
 
-# Add flags to value
-
 <% if @settings['rewrite_cond'] -%>
 <% rewrite_conds = @settings['rewrite_cond'] -%>
 <% rewrite_conds.sort.each do |cond| -%>
