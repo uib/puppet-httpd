@@ -47,7 +47,7 @@ class httpd (
     default => '',
   },
   $prefork_settings = {},
-  $listen_ports = ['80','8080']
+  $listen_ports = ['80']
 )  {
 
   validate_array($listen_ports)
