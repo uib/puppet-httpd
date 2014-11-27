@@ -2,8 +2,10 @@
 # Virtual host setup for HTTP (port 80)
 # Add new vhost to vhosts.d/
 #
-<%- if @ipv6_addr %>NameVirtualHost <%=  @ipv6_addr %>:80<%- end %>
-NameVirtualHost <%= @vhost_ip %>:80
+<% @listen_ports.sort.each do |port| -%>
+<%- if @ipv6_addr %>NameVirtualHost <%=  @ipv6_addr %>:<%= port %><%- end %>
+NameVirtualHost <%= @vhost_ip %>:<%= port %>
+<% end -%>
 
 # Default vhost port 80
 <VirtualHost <%= @server_dns %>:80>
