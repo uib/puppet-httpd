@@ -82,24 +82,6 @@
 <% end -%>
 <% end -%>
 
-<% if @settings['rewrite_cond'] or @settings['rewrite_rule'] -%>
-  RewriteEngine On
-<% end -%>
-
-<% if @settings['rewrite_cond'] -%>
-<% rewrite_conds = @settings['rewrite_cond'] -%>
-<% rewrite_conds.sort.each do |cond| -%>
-  RewriteCond <%= cond %>
-<% end -%>
-<% end -%>
-
-<% if @settings['rewrite_rule'] -%>
-<% rewrite_rules = @settings['rewrite_rule'] -%>
-<% rewrite_rules.sort.each do |rule| -%>
-  RewriteRule <%= rule %>
-<% end -%>
-<% end -%>
-
 <% if @settings['custom'] -%>
   # Custom settings:
 <% @settings['custom'].sort.each do |key,val| -%>
