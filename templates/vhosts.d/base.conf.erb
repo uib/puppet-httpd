@@ -82,12 +82,8 @@
 <% end -%>
 <% end -%>
 
-<% if @settings['rewrite_base'] or @settings['rewrite_cond'] or @settings['rewrite_rule'] -%>
+<% if @settings['rewrite_cond'] or @settings['rewrite_rule'] -%>
   RewriteEngine On
-<% end -%>
-
-<% if @settings['rewrite_base'] -%>
-  RewriteBase <%= @settings['rewrite_base'] %>
 <% end -%>
 
 <% if @settings['rewrite_cond'] -%>
