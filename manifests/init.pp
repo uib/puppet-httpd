@@ -47,10 +47,10 @@ class httpd (
     default => '',
   },
   $prefork_settings = {},
-  $listen_ports = ['80']
+  $listen_ports = { 80 => '' }  
 )  {
 
-  validate_array($listen_ports)
+  validate_hash($listen_ports)
 
   case $interface {
     eth0: { $vhost_ip = $::ipaddress_eth0 }
