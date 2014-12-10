@@ -15,7 +15,7 @@ NameVirtualHost <%= @vhost_ip %>:<%= port %>
 <%- unless ip.nil? -%>
 NameVirtualHost <%= ip %>:<%= port -%>
 <%- end -%>
-<%- end -%>
+<%- end %>
 <%- ip = instance_variable_get("@ipaddress_#{interface}") -%>
 <%- unless ip.nil? -%>
 NameVirtualHost <%= ip %>:<%= port -%>
