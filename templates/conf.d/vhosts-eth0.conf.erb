@@ -10,11 +10,15 @@ NameVirtualHost <%=  @ipv6_addr %>:<%= port -%>
 NameVirtualHost <%= @vhost_ip %>:<%= port %>
 <%- else -%>
 <%- if @ipv6_addr -%>
-<%- factervar = "@ipaddress6_#{interface}" -%>
-NameVirtualHost <%= instance_variable_get(factervar) %>:<%= port -%>
+<%- ip = instance_variable_get("@ipaddress6_#{interface}") -%>
+<%- unless ip.nil? -%>
+NameVirtualHost <%= ip %>:<%= port -%>
 <%- end %>
-<%- factervar = "@ipaddress_#{interface}" -%>
-NameVirtualHost <%= instance_variable_get(factervar) %>:<%= port -%>
+<%- end %>
+<%- ip = instance_variable_get("@ipaddress_#{interface}") -%>
+<%- unless ip.nil? -%>
+NameVirtualHost <%= ip %>:<%= port -%>
+<%- end -%>
 <%- end -%>
 <%- end %>
 
