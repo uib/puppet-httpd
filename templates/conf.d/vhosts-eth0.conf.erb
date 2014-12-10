@@ -6,19 +6,19 @@
 <% @listen_ports.sort.each do |port, interface| -%>
 <%- if interface.empty? -%>
 <%- if @ipv6_addr -%>
-NameVirtualHost <%=  @ipv6_addr %>:<%= port -%>
+NameVirtualHost <%=  @ipv6_addr %>:<%= port %>
 <%- end -%>
 NameVirtualHost <%= @vhost_ip %>:<%= port %>
 <%- else -%>
 <%- if @ipv6_addr -%>
 <%- ip = instance_variable_get("@ipaddress6_#{interface}") -%>
 <%- unless ip.nil? -%>
-NameVirtualHost <%= ip %>:<%= port -%>
+NameVirtualHost <%= ip %>:<%= port %>
 <%- end -%>
-<%- end %>
+<%- end -%>
 <%- ip = instance_variable_get("@ipaddress_#{interface}") -%>
 <%- unless ip.nil? -%>
-NameVirtualHost <%= ip %>:<%= port -%>
+NameVirtualHost <%= ip %>:<%= port %>
 <%- end -%>
 <%- end -%>
 <%- end %>
