@@ -1,3 +1,4 @@
+# Managed with Puppet! All changes will be overwritten.
 # 
 # Virtual host setup for HTTP (port 80)
 # Add new vhost to vhosts.d/
@@ -6,15 +7,15 @@
 <%- if interface.empty? -%>
 <%- if @ipv6_addr -%>
 NameVirtualHost <%=  @ipv6_addr %>:<%= port -%>
-<%- end %>
+<%- end -%>
 NameVirtualHost <%= @vhost_ip %>:<%= port %>
 <%- else -%>
 <%- if @ipv6_addr -%>
 <%- ip = instance_variable_get("@ipaddress6_#{interface}") -%>
 <%- unless ip.nil? -%>
 NameVirtualHost <%= ip %>:<%= port -%>
-<%- end %>
-<%- end %>
+<%- end -%>
+<%- end -%>
 <%- ip = instance_variable_get("@ipaddress_#{interface}") -%>
 <%- unless ip.nil? -%>
 NameVirtualHost <%= ip %>:<%= port -%>
