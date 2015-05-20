@@ -31,17 +31,18 @@
 ## LoadModule <%= @name %><%- unless @path.empty? %> <%= @path %><%- end %>
 
 define httpd::modules::core_modules  (
-  $config_dir   = $httpd::config_dir,
-  $ensure       = 'installed',
-  $order        = '50',
-  $path         = undef,
+  $path,
+  $config_dir             = $::httpd::config_dir,
+  $core_modules_conf_path = $::httpd::core_modules_conf_path,
+  $ensure                 = 'installed',
+  $order                  = '50',
 )  {
   validate_re($ensure, "installed|absent", "Valid values are 'installed' or 'absent'")
 
   if $ensure == 'installed' {
     concat::fragment { "${name}":
-      target  => "${config_dir}/conf.d/core_modules.conf",
-      content => template("${module_name}/conf.d/core_modules.conf.erb"),
+      target  => $core_modules_conf_path,
+      content => template("${module_name}/conf.modules.d/05-core_modules.conf.erb"),
       order   => $order,
     }
   }
