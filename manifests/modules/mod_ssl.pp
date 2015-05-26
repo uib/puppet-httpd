@@ -27,11 +27,13 @@ class httpd::modules::mod_ssl(
   $ssl_keys       = $httpd::ssl_keys,
   $server_dns     = $httpd::server_dns,
   $config_dir     = $httpd::config_dir,
+  $mod_config_dir = $httpd::mod_config_dir,
+  $version        = $httpd::version,
   $replace        = $httpd::replace,
   $ipv6_addr      = $httpd::ipv6_addr,
   $interface      = $httpd::interface,
 ) {
-  
+
   case $interface {
     eth0: { $vhost_ip = $::ipaddress_eth0 }
     eth1: { $vhost_ip = $::ipaddress_eth1 }
@@ -43,47 +45,43 @@ class httpd::modules::mod_ssl(
   package { 'mod_ssl':
     ensure => installed
   }
-  
+
   File {
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
+    ensure  => present,
   }
 
   # This file will set up virtual hosts
-  file { 'vhosts_https':
-    path    =>  "${config_dir}/conf.d/vhost-https-eth0.conf",
-    ensure  => present,
-    content => template("httpd/conf.d/vhosts-https-eth0.conf.erb"),
+  file { "${config_dir}/conf.d/vhost-https-eth0.conf":
+    content => template("${module_name}/conf.d/${version}/vhosts-https-eth0.conf.erb"),
     replace => $replace,
     require => Package['mod_ssl'],
-    notify  => Class['httpd::service']
+    notify  => Class['::httpd::service']
   }
-  
+
   file { 'ssl_inc':
     path =>  "${config_dir}/conf.d/ssl-eth0.inc",
     ensure => present,
     content => template("httpd/conf.d/ssl-eth0.inc.erb"),
     replace => $replace,
-    require => Package['mod_ssl']
+    require => Package['mod_ssl'],
+    notify  => Class['::httpd::service']
   }
 
-  file { 'ssl_conf':
-    path => "${config_dir}/conf.d/ssl.conf",
-    ensure => file,
-    source    => "puppet:///modules/httpd/ssl.conf",
+  file { "${config_dir}/conf.d/ssl.conf":
+    source  => "puppet:///modules/${module_name}/conf.d/${version}/ssl.conf",
     replace => $replace,
     require => Package['mod_ssl']
   }
 
   file { 'ssl_crt':
     path => "/etc/pki/tls/certs/${ssl_keys}.crt",
-    ensure => present,
     require => Package['mod_ssl']
   }
   file { 'ssl_key':
     path => "/etc/pki/tls/private/${ssl_keys}.key",
-    ensure => present,
     mode => '0600',
     require => Package['mod_ssl']
   }
@@ -91,8 +89,14 @@ class httpd::modules::mod_ssl(
   # Terena UiB CA chain
   file { 'cachain':
     path => "/etc/pki/tls/certs/cachain.pem",
-    ensure => file,
     source    => "puppet:///modules/httpd/cachain.pem",
     require => Package['mod_ssl']
   }
+
+  if $version >= 24 {
+    file { "${mod_config_dir}/00-ssl.conf":
+      source    => "puppet:///modules/${module_name}/conf.modules.d/${version}/00-ssl.conf"
+    }
+  }
+
 }

@@ -1,0 +1,12 @@
+#
+# Managed with Puppet! All changes will be overwritten.
+#
+# Virtual host setup for HTTPS (port 443)
+#
+
+<VirtualHost <%= @server_dns %>:443>
+  DocumentRoot /var/www/html
+
+  # Default ssl-config for eth0
+  Include conf.d/ssl-eth0.inc
+</VirtualHost>
