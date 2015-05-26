@@ -1,6 +1,7 @@
 class httpd::modules::mod_passenger(
-  $config_dir   = $httpd::config_dir,
-  $service      = $httpd::service
+  $config_dir     = $::httpd::config_dir,
+  $mod_config_dir = $::httpd::mod_config_dir,
+  $version        = $::httpd::version
 ) {
 
   # Install packages
@@ -11,6 +12,6 @@ class httpd::modules::mod_passenger(
   file { 'passenger_conf':
     path => "${config_dir}/conf.d/passenger.conf",
     ensure => present,
-    notify => Class['httpd::service']
+    notify => Class['::httpd::service']
   }
 }

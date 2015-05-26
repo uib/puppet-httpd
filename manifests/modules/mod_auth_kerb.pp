@@ -1,8 +1,7 @@
 class httpd::modules::mod_auth_kerb(
-  $config_dir     = $httpd::config_dir,
-  $service        = $httpd::service,
-  $group          = $httpd::group,
-  $manage_keytab  = true
+  $config_dir     = $::httpd::config_dir,
+  $mod_config_dir = $::httpd::mod_config_dir,
+  $version        = $::httpd::version
 ) {
 
   # Install packages
@@ -10,26 +9,15 @@ class httpd::modules::mod_auth_kerb(
     ensure => installed
   }
 
-  file { 'auth_kerb_conf':
-    path => "${config_dir}/conf.d/auth_kerb.conf",
-    ensure => present,
-    notify => Class['httpd::service']
+  $mod_config_path = $version? {
+    22 => "${mod_config_dir}/auth_kerb.conf",
+    24 => "${mod_config_dir}/10-auth_kerb.conf",
+    default => "${mod_config_dir}/10-auth_kerb.conf",
   }
 
-  # Ensure that the name, permission and mode of the keytab is set up correct
-  if $manage_keytab {
-    file { '/etc/httpd/keytabs/http.keytab':
-      ensure  => present,
-      owner   => root,
-      group   => $group,
-      mode    => 0640,
-      require => File['/etc/httpd/keytabs']
-    }
-    file { '/etc/httpd/keytabs':
-      ensure  => directory,
-      owner   => root,
-      group   => $group,
-      mode    => 0750
-    }
+  file { $mod_config_path:
+    ensure => present,
+    notify => Class['::httpd::service']
   }
+
 }

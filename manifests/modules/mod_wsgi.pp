@@ -13,8 +13,8 @@ class httpd::modules::mod_wsgi(
   }
 
   $config_file = $version? {
-    '22' => "${mod_config_dir}/wsgi.conf",
-    '24' => "${mod_config_dir}/10-wsgi.conf",
+    22 => "${mod_config_dir}/wsgi.conf",
+    24 => "${mod_config_dir}/10-wsgi.conf",
     default => "${mod_config_dir}/10-wsgi.conf"
   }
   file { $config_file:
