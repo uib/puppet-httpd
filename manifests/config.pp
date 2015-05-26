@@ -85,7 +85,7 @@ class httpd::config(
   }
 
   # Version specific config
-  if $version >= '24' {
+  if $version >= 24 {
     # Default files in conf.d
     file { "${config_dir}/conf.d/autoindex.conf":
       source => "puppet:///modules/${module_name}/conf.d/${version}/autoindex.conf"

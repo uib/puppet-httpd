@@ -69,25 +69,25 @@ class httpd (
   # version
   if $::osfamily == 'RedHat' {
     $version = $::operatingsystemmajrelease? {
-      6 => '22',
-      7 => '24',
-      default => '24'
+      6 => 22,
+      7 => 24,
+      default => 24
     }
   } elsif $::osfamily == 'Debian' {
-    $version = '24'
+    $version = 24
   }
 
   # modules config directory
-  if $::osfamily == 'RedHat' and $version == '24' {
+  if $::osfamily == 'RedHat' and $version == 24 {
     $mod_config_dir = "${config_dir}conf.modules.d"
-  } elsif $::osfamily == 'RedHat' and $version == '22' {
+  } elsif $::osfamily == 'RedHat' and $version == 22 {
     $mod_config_dir = "${config_dir}conf.d"
   }
 
   # core modules config file
   $core_modules_conf_path = $version? {
-    '22' => "${mod_config_dir}/core_modules.conf",
-    '24' => "${mod_config_dir}/05-core_modules.conf",
+    22 => "${mod_config_dir}/core_modules.conf",
+    24 => "${mod_config_dir}/05-core_modules.conf",
     default => "${mod_config_dir}/05-core_modules.conf"
   }
 
