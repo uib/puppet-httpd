@@ -520,6 +520,8 @@ LogFormat "%{User-agent}i" agent
 
 LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" request_time_sec %T request_time_microsec %D vhost %v" fulllog
 
+LogFormat "%v %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" piwik_vhost
+
 # "combinedio" includes actual counts of actual bytes received (%I) and sent (%O); this
 # requires the mod_logio module to be loaded.
 #LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio
