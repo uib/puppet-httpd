@@ -25,6 +25,8 @@
 #
 class httpd::modules::mod_ssl(
   $ssl_keys       = $httpd::ssl_keys,
+  $cachain        = $httpd::cachain,
+  $cachain_source = $httpd::cachain_source,
   $server_dns     = $httpd::server_dns,
   $config_dir     = $httpd::config_dir,
   $replace        = $httpd::replace,
@@ -88,11 +90,12 @@ class httpd::modules::mod_ssl(
     require => Package['mod_ssl']
   }
 
-  # Terena UiB CA chain
-  file { 'cachain':
-    path => "/etc/pki/tls/certs/cachain.pem",
-    ensure => file,
-    source    => "puppet:///modules/httpd/cachain.pem",
-    require => Package['mod_ssl']
+  if $cachain_source {
+    file { 'cachain':
+      path    => "/etc/pki/tls/certs/cachain.pem",
+      ensure  => file,
+      source  => "puppet:///modules/$cachain_source",
+      require => Package['mod_ssl']
+    }
   }
 }

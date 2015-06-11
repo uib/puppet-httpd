@@ -31,6 +31,8 @@ class httpd (
   $replace        = true,
   $server_dns     = $::fqdn,
   $ssl_keys       = $::fqdn,
+  $cachain_source = undef,
+  $cachain        = 'cachain.pem',
   $config_dir = $::osfamily ? { RedHat => '/etc/httpd/', default => '', },
   $user = $::osfamily ? { default => 'apache', },
   $group = $::osfamily ? { default => 'apache', },
