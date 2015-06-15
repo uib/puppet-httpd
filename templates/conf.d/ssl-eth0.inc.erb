@@ -38,7 +38,7 @@ SSLCertificateKeyFile /etc/pki/tls/private/<%= @ssl_keys %>.key
 #   when the CA certificates are directly appended to the server
 #   certificate for convinience.
 <% if @cachain -%>
-  SSLCertificateChainFile /etc/pki/tls/certs/<%= @cachain %>
+SSLCertificateChainFile /etc/pki/tls/certs/<%= @cachain %>
 <% end -%>
 
 #   Certificate Authority (CA):
@@ -96,7 +96,7 @@ SSLCertificateKeyFile /etc/pki/tls/private/<%= @ssl_keys %>.key
 #     and no other module can change it.
 #   o OptRenegotiate:
 #     This enables optimized SSL connection renegotiation handling when SSL
-#     directives are used in per-directory context. 
+#     directives are used in per-directory context.
 #SSLOptions +FakeBasicAuth +ExportCertData +StrictRequire
 <Files ~ "\.(cgi|shtml|phtml|php3?)$">
     SSLOptions +StdEnvVars
@@ -122,7 +122,7 @@ SSLCertificateKeyFile /etc/pki/tls/private/<%= @ssl_keys %>.key
 #     alert of the client. This is 100% SSL/TLS standard compliant, but in
 #     practice often causes hanging connections with brain-dead browsers. Use
 #     this only for browsers where you know that their SSL implementation
-#     works correctly. 
+#     works correctly.
 #   Notice: Most problems of broken clients are also related to the HTTP
 #   keep-alive facility, so you usually additionally want to disable
 #   keep-alive for those clients, too. Use variable "nokeepalive" for this.
