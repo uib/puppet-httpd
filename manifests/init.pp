@@ -31,6 +31,8 @@ class httpd (
   $replace        = true,
   $server_dns     = $::fqdn,
   $ssl_keys       = $::fqdn,
+  $cachain_source = undef,
+  $cachain        = 'cachain.pem',
   $config_dir = $::osfamily ? { RedHat => '/etc/httpd/', default => '', },
   $user = $::osfamily ? { default => 'apache', },
   $group = $::osfamily ? { default => 'apache', },
@@ -60,7 +62,7 @@ class httpd (
       eth1: { $vhost_ip = $::ipaddress_eth1 }
       eth2: { $vhost_ip = $::ipaddress_eth2 }
       default: {$vhost_ip = $::ipaddress}
-    } 
+    }
   } else {
     err("httpd::interface is set to ${interface} but is missing!")
     $vhost_ip = $::ipaddress

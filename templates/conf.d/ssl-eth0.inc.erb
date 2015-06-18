@@ -21,7 +21,10 @@ SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH
 # the certificate is encrypted, then you will be prompted for a
 # pass phrase.  Note that a kill -HUP will prompt again.  A new
 # certificate can be generated using the genkey(1) command.
-SSLCertificateFile /etc/pki/tls/certs/<%= @ssl_keys %>.crt
+<% if @cachain -%>
+SSLCertificateChainFile /etc/pki/tls/certs/<%= @cachain %>
+<% end -%>
+
 
 #   Server Private Key:
 #   If the key is not combined with the certificate, use this
@@ -94,7 +97,7 @@ SSLCertificateChainFile /etc/pki/tls/certs/cachain.pem
 #     and no other module can change it.
 #   o OptRenegotiate:
 #     This enables optimized SSL connection renegotiation handling when SSL
-#     directives are used in per-directory context. 
+#     directives are used in per-directory context.
 #SSLOptions +FakeBasicAuth +ExportCertData +StrictRequire
 <Files ~ "\.(cgi|shtml|phtml|php3?)$">
     SSLOptions +StdEnvVars
@@ -120,7 +123,7 @@ SSLCertificateChainFile /etc/pki/tls/certs/cachain.pem
 #     alert of the client. This is 100% SSL/TLS standard compliant, but in
 #     practice often causes hanging connections with brain-dead browsers. Use
 #     this only for browsers where you know that their SSL implementation
-#     works correctly. 
+#     works correctly.
 #   Notice: Most problems of broken clients are also related to the HTTP
 #   keep-alive facility, so you usually additionally want to disable
 #   keep-alive for those clients, too. Use variable "nokeepalive" for this.
