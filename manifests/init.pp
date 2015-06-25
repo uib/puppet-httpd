@@ -20,6 +20,7 @@
 # === Authors
 #
 # Raymond Kristiansen <st02221@uib.no>
+# Anders Vaage <anders@uib.no>
 #
 # === Copyright
 #
@@ -51,7 +52,8 @@ class httpd (
   },
   $prefork_settings = {},
   $listen_ports = { 80 => '' },
-  $core_modules = hiera_hash('httpd::core_modules', {})
+  $core_modules = hiera_hash('httpd::core_modules_hiera', {}),
+  $vhosts_config = hiera_hash('httpd::vhost_hiera', {})
 )  {
 
   validate_hash($listen_ports)
@@ -95,6 +97,9 @@ class httpd (
 
   # add core modules
   create_resources('httpd::modules::core_modules', $core_modules )
+
+  # create vhosts
+  create_resources('httpd::vhosts', $vhosts_config)
 
   class { '::httpd::install': } ->
   class { '::httpd::config': } ->
