@@ -21,10 +21,7 @@ SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH
 # the certificate is encrypted, then you will be prompted for a
 # pass phrase.  Note that a kill -HUP will prompt again.  A new
 # certificate can be generated using the genkey(1) command.
-<% if @cachain -%>
-SSLCertificateChainFile /etc/pki/tls/certs/<%= @cachain %>
-<% end -%>
-
+SSLCertificateFile /etc/pki/tls/certs/<%= @ssl_keys %>.crt
 
 #   Server Private Key:
 #   If the key is not combined with the certificate, use this
@@ -40,7 +37,9 @@ SSLCertificateKeyFile /etc/pki/tls/private/<%= @ssl_keys %>.key
 #   the referenced file can be the same as SSLCertificateFile
 #   when the CA certificates are directly appended to the server
 #   certificate for convinience.
-SSLCertificateChainFile /etc/pki/tls/certs/cachain.pem
+<% if @cachain -%>
+SSLCertificateChainFile /etc/pki/tls/certs/<%= @cachain %>
+<% end -%>
 
 #   Certificate Authority (CA):
 #   Set the CA certificate verification path where to find CA
