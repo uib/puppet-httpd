@@ -34,7 +34,7 @@ class httpd (
   $ssl_keys       = $::fqdn,
   $cachain_source = undef,
   $cachain        = 'cachain.pem',
-  $config_dir = $::osfamily ? { RedHat => '/etc/httpd/', default => '', },
+  $config_dir = $::osfamily ? { RedHat => '/etc/httpd', default => '', },
   $user = $::osfamily ? { default => 'apache', },
   $group = $::osfamily ? { default => 'apache', },
   $log_level = 'warn',
@@ -84,9 +84,9 @@ class httpd (
 
   # modules config directory
   if $::osfamily == 'RedHat' and $version == 24 {
-    $mod_config_dir = "${config_dir}conf.modules.d"
+    $mod_config_dir = "${config_dir}/conf.modules.d"
   } elsif $::osfamily == 'RedHat' and $version == 22 {
-    $mod_config_dir = "${config_dir}conf.d"
+    $mod_config_dir = "${config_dir}/conf.d"
   }
 
   # core modules config file
