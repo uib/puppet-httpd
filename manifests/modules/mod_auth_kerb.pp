@@ -1,11 +1,12 @@
 class httpd::modules::mod_auth_kerb(
   $config_dir     = $::httpd::config_dir,
   $mod_config_dir = $::httpd::mod_config_dir,
-  $version        = $::httpd::version
+  $version        = $::httpd::version,
+  $package        = 'mod_auth_kerb'
 ) {
 
   # Install packages
-  package { 'mod_auth_kerb':
+  package { $package:
     ensure => installed
   }
 

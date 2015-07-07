@@ -4,11 +4,12 @@ class httpd::modules::mod_wsgi(
   $replace        = $::httpd::replace,
   $version        = $::httpd::version,
   $module_path    = 'modules',
-  $socket_path    = undef
+  $socket_path    = undef,
+  $package        = 'mod_wsgi'
 ) {
 
   # Install packages 
-  package { 'mod_wsgi':
+  package { $package:
     ensure => installed
   }
 
