@@ -24,16 +24,18 @@
 # Copyright 2013 UiB
 #
 class httpd::modules::mod_ssl(
-  $ssl_keys       = $httpd::ssl_keys,
-  $cachain        = $httpd::cachain,
-  $cachain_source = $httpd::cachain_source,
-  $server_dns     = $httpd::server_dns,
-  $config_dir     = $httpd::config_dir,
-  $mod_config_dir = $httpd::mod_config_dir,
-  $version        = $httpd::version,
-  $replace        = $httpd::replace,
-  $ipv6_addr      = $httpd::ipv6_addr,
-  $interface      = $httpd::interface,
+  $ssl_keys       = $::httpd::ssl_keys,
+  $cachain        = $::httpd::cachain,
+  $cachain_source = $::httpd::cachain_source,
+  $server_dns     = $::httpd::server_dns,
+  $config_dir     = $::httpd::config_dir,
+  $mod_config_dir = $::httpd::mod_config_dir,
+  $version        = $::httpd::version,
+  $replace        = $::httpd::replace,
+  $ipv6_addr      = $::httpd::ipv6_addr,
+  $interface      = $::httpd::interface,
+  $scl            = $::httpd::scl,
+  $package        = 'mod_ssl'
 ) {
 
   case $interface {
@@ -44,7 +46,7 @@ class httpd::modules::mod_ssl(
   }
 
   # Install packages
-  package { 'mod_ssl':
+  package { $package:
     ensure => installed
   }
 
@@ -59,7 +61,7 @@ class httpd::modules::mod_ssl(
   file { "${config_dir}/conf.d/vhost-https-eth0.conf":
     content => template("${module_name}/conf.d/${version}/vhosts-https-eth0.conf.erb"),
     replace => $replace,
-    require => Package['mod_ssl'],
+    require => Package[$package],
     notify  => Class['::httpd::service']
   }
 
@@ -68,24 +70,24 @@ class httpd::modules::mod_ssl(
     ensure => present,
     content => template("httpd/conf.d/ssl-eth0.inc.erb"),
     replace => $replace,
-    require => Package['mod_ssl'],
+    require => Package[$package],
     notify  => Class['::httpd::service']
   }
 
   file { "${config_dir}/conf.d/ssl.conf":
-    source  => "puppet:///modules/${module_name}/conf.d/${version}/ssl.conf",
+    content => template("${module_name}/conf.d/${version}/ssl.conf.erb"),
     replace => $replace,
-    require => Package['mod_ssl']
+    require => Package[$package]
   }
 
   file { 'ssl_crt':
     path => "/etc/pki/tls/certs/${ssl_keys}.crt",
-    require => Package['mod_ssl']
+    require => Package[$package]
   }
   file { 'ssl_key':
     path => "/etc/pki/tls/private/${ssl_keys}.key",
     mode => '0600',
-    require => Package['mod_ssl']
+    require =>Package[$package]
   }
 
   if $cachain_source {
@@ -93,7 +95,7 @@ class httpd::modules::mod_ssl(
       path    => "/etc/pki/tls/certs/cachain.pem",
       ensure  => file,
       source  => "puppet:///modules/$cachain_source",
-      require => Package['mod_ssl']
+      require => Package[$package]
     }
   }
 

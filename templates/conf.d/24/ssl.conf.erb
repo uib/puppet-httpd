@@ -15,7 +15,11 @@ Listen 443 https
 #   Configure the pass phrase gathering process.
 #   The filtering dialog program (`builtin' is a internal
 #   terminal dialog) has to provide the pass phrase on stdout.
+<% if @scl -%>
+SSLPassPhraseDialog exec:/opt/rh/<%=@scl%>/root/usr/libexec/httpd-ssl-pass-dialog
+<% else -%>
 SSLPassPhraseDialog exec:/usr/libexec/httpd-ssl-pass-dialog
+<% end -%>
 
 #   Inter-Process Session Cache:
 #   Configure the SSL Session Cache: First the mechanism 
