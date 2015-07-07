@@ -50,6 +50,7 @@ class httpd (
     RedHat => 'httpd',
     default => '',
   },
+  $scl = false,
   $prefork_settings = {},
   $listen_ports = { 80 => '' },
   $core_modules = hiera_hash('httpd::core_modules_hiera', {}),
@@ -100,6 +101,21 @@ class httpd (
 
   # create vhosts
   create_resources('httpd::vhosts', $vhosts_config)
+
+  #SCL
+  if $scl == 'httpd24' {
+    file { '/etc/httpd':
+      ensure => link,
+      force => true,
+      target => '/opt/rh/httpd24/root/etc/httpd',
+      before => Class['::httpd::config'],
+    }
+    exec { 'SCL-create document root':
+      command => "/bin/mkdir -p ${doc_root}",
+      creates => $doc_root,
+      before => Class['::httpd::config']
+    }
+  }
 
   class { '::httpd::install': } ->
   class { '::httpd::config': } ->
