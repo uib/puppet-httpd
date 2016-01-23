@@ -89,7 +89,8 @@ class httpd::modules::mod_ssl(
     path    => "/etc/pki/tls/private/${ssl_keys}.key",
     mode    => $ssl_key_group? {
       'root'  => '0600',
-      default => '0640' }
+      default => '0640'
+    },
     group   => $ssl_key_group,
     require => Package[$package]
   }
