@@ -36,6 +36,7 @@ class httpd::modules::mod_ssl(
   $interface      = $::httpd::interface,
   $scl            = $::httpd::scl,
   $ssl_key_group  = 'root',
+  $ssl_port       = '443',
   $package        = 'mod_ssl'
 ) {
 
