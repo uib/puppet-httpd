@@ -87,9 +87,11 @@ class httpd::modules::mod_ssl(
   }
   file { 'ssl_key':
     path    => "/etc/pki/tls/private/${ssl_keys}.key",
-    mode    => '0600',
+    mode    => $ssl_key_group? {
+      'root'  => '0600',
+      default => '0640' }
     group   => $ssl_key_group,
-    require =>Package[$package]
+    require => Package[$package]
   }
 
   if $cachain_source {
