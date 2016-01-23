@@ -35,6 +35,7 @@ class httpd::modules::mod_ssl(
   $ipv6_addr      = $::httpd::ipv6_addr,
   $interface      = $::httpd::interface,
   $scl            = $::httpd::scl,
+  $ssl_key_group  = 'root',
   $package        = 'mod_ssl'
 ) {
 
@@ -66,9 +67,9 @@ class httpd::modules::mod_ssl(
   }
 
   file { 'ssl_inc':
-    path =>  "${config_dir}/conf.d/ssl-eth0.inc",
-    ensure => present,
-    content => template("httpd/conf.d/ssl-eth0.inc.erb"),
+    ensure  => present,
+    path    =>  "${config_dir}/conf.d/ssl-eth0.inc",
+    content => template('httpd/conf.d/ssl-eth0.inc.erb'),
     replace => $replace,
     require => Package[$package],
     notify  => Class['::httpd::service']
@@ -81,20 +82,21 @@ class httpd::modules::mod_ssl(
   }
 
   file { 'ssl_crt':
-    path => "/etc/pki/tls/certs/${ssl_keys}.crt",
+    path    => "/etc/pki/tls/certs/${ssl_keys}.crt",
     require => Package[$package]
   }
   file { 'ssl_key':
-    path => "/etc/pki/tls/private/${ssl_keys}.key",
-    mode => '0600',
+    path    => "/etc/pki/tls/private/${ssl_keys}.key",
+    mode    => '0600',
+    group   => $ssl_key_group,
     require =>Package[$package]
   }
 
   if $cachain_source {
     file { 'cachain':
-      path    => "/etc/pki/tls/certs/cachain.pem",
       ensure  => file,
-      source  => "puppet:///modules/$cachain_source",
+      path    => '/etc/pki/tls/certs/cachain.pem',
+      source  => "puppet:///modules/${cachain_source}",
       require => Package[$package]
     }
   }
